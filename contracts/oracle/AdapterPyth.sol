@@ -6,9 +6,10 @@ import "@pythnetwork/pyth-sdk-solidity/PythStructs.sol";
 import "./IAdapterPyth.sol";
 
 contract AdapterPyth is IAdapterPyth {
-    address public pythContract;
+    address public immutable pythContract;
 
     constructor(address contractAddress) {
+        require(contractAddress != address(0), "price feed address is the zero address");
         pythContract = contractAddress;
     }
 

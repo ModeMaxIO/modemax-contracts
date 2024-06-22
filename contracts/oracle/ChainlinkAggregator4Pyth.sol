@@ -6,6 +6,8 @@ import "./Owned.sol";
 import "./IAdapterPyth.sol";
 
 contract ChainlinkAggregator4Pyth is Owned, AggregatorV2V3Interface {
+    event SetKeeper(address account, bool isActive);
+
     uint256 public constant maxRoundId = 0xFFFFFFFF;
 
     uint32 latestAggregatorRoundId;
@@ -32,7 +34,9 @@ contract ChainlinkAggregator4Pyth is Owned, AggregatorV2V3Interface {
     }
 
     function setKeeper(address _keeper, bool _isKeeper) external onlyOwner {
+        require(_keeper != address(0), "keeper is the zero address");
         isKeeper[_keeper] = _isKeeper;
+        emit SetKeeper(_keeper, _isKeeper);
     }
 
     function setLatestAnswer(int192[] memory answers) external {
